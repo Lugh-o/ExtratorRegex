@@ -24,36 +24,69 @@ class ExtratorRegexTest extends Specification {
     def "retorna ditongos, tritongos e hiatos" () {
         given:
             double precisaoEsperada = 0.9
-            String input =
-                    "aceitar fortuito milionário ideia dourar leão\n" +
-                    "pães sou cai androide beijo noivo aula guardar\n" +
-                    "ouço usufrui neurose irmão\n" +
-                    "tatuei tatuou guaipé Uruguai Uruguaiana\n" +
-                    "Uruguaianense uruguaio Paraguai paraguaio\n" +
-                    "paraguaiense apaziguei iguais saguão \t\n" +
-                    "fruir gaúcho viúvo moeda rainha piolho \n" +
-                    "saúde hiato país iate coordenar jesuíta \n" +
-                    "poeira voar caatinga fiel cultue dia\n" +
-                    "tia egoísta graal reeleger conteúdo raiz"
 
             Set<String> ditongos = [
                     "aceitar", "fortuito", "milionário", "ideia", "dourar", "leão",
-                    "pães", "sou", "cai", "androide", "beijo", "noivo", "aula",
-                    "guardar", "ouço", "usufrui", "neurose", "irmão"
+                    "pães", "sou", "cai", "androide", "beijo", "noivo",
+                    "aula", "guardar", "ouço", "usufrui", "neurose", "irmão",
+                    "aurora", "ruivo", "aipo", "automóvel", "degraus", "então",
+                    "herói", "feiura", "aguentar", "ouro", "ferreiro", "pouco",
+                    "doutrina", "pai", "mãe", "céu", "muito", "qual",
+                    "linguiça", "frequente", "quase", "sei", "goela", "meu",
+                    "azuis", "jaula", "boi", "poupa", "quadra", "põe",
+                    "regiões", "viu", "papéis", "anéis", "igual", "iguana",
+                    "cuidado", "cão", "tranquilo", "equestre", "enxaguando",
+                    "quota", "coração", "oblíqua", "água", "maizena", "nasais",
+                    "euforia", "orais", "não", "lingueta", "órfão", "capitães",
+                    "áurea", "órgão", "cetáceo", "colônia", "tênue", "exímio"
             ]
 
             Set<String> tritongos = [
-                    "tatuei", "tatuou", "guaipé", "Uruguai", "Uruguaiana",
-                    "Uruguaianense", "uruguaio", "Paraguai", "paraguaio",
-                    "paraguaiense", "apaziguei", "iguais", "saguão"
+                    "tatuei", "tatuou", "guaipé",
+                    "Uruguai", "Uruguaiana", "Uruguaianense",
+                    "uruguaio", "Paraguai",
+                    "paraguaio", "paraguaiense", "apaziguei",
+                    "iguais", "saguão", "saguões", "baguais",
+                    "guaiol", "linguais", "araguaianense",
+                    "guaianá", "pontuais", "virtuais",
+                    "guaiquica", "maçaquaia", "brasiguaio",
+                    "guaipecada", "guaiaraúva", "uaipi",
+                    "guaiaca", "guaiacã", "uaixima",
+                    "uau", "guaiamu", "guaivira",
+                    "guaipeca", "agueiro", "desaguou", "aguou",
+                    "delinquiu", "delinquia", "saqueia",
+                    "desiguais", "ruão", "adequou",
+                    "insinuou", "descontinuou", "conceituou",
+                    "situou", "minguou", "averiguei", "quão", "quais",
+                    "quaisquer", "bueiro", "guaiacônico"
             ]
 
             Set<String> hiatos = [
-                    "fruir", "gaúcho", "viúvo", "moeda", "rainha", "piolho",
-                    "saúde", "hiato", "país", "iate", "coordenar", "jesuíta",
-                    "poeira", "voar", "caatinga", "fiel", "cultue", "dia",
-                    "tia", "egoísta", "graal", "reeleger", "conteúdo", "raiz"
+                    "fruir", "gaúcho", "viúvo",
+                    "moeda", "rainha", "piolho",
+                    "saúde", "hiato", "país",
+                    "iate", "coordenar", "jesuíta",
+                    "poeira", "voar", "caatinga",
+                    "fiel", "cultue", "dia",
+                    "tia", "egoísta", "graal",
+                    "reeleger", "conteúdo", "raiz",
+                    "álcool", "coelho", "magoado",
+                    "moinho", "proteína", "saída",
+                    "caatinga", "auréola", "Piauí",
+                    "cair", "flúor", "ciúme",
+                    "ruim", "boemia", "poesia",
+                    "Saara", "cafeína", "faísca",
+                    "rio", "rainha", "amendoim",
+                    "boa", "ruído", "oceano",
+                    "biologia", "baú",
+                    "ainda", "criança", "cajuína",
+                    "suor", "judaísmo", "frio",
+                    "saí", "ataúde", "coar",
+                    "tireoide", "ruína", "lua",
+                    "voo", "leão", "teatro"
             ]
+
+        String input = String.join(' ', ditongos) + ' ' + String.join(' ', tritongos) + ' ' + String.join(' ', hiatos)
 
         when:
             Map<String, Set> output = ExtratorRegex.encontrarEncontrosSilabicos(input)
