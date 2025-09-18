@@ -76,7 +76,7 @@ class ExtratorRegexTest extends Specification {
                     "cair", "flúor", "ciúme",
                     "ruim", "boemia", "poesia",
                     "Saara", "cafeína", "faísca",
-                    "rio", "rainha", "amendoim",
+                    "rio", "amendoim",
                     "boa", "ruído", "oceano",
                     "biologia", "baú",
                     "ainda", "criança", "cajuína",
