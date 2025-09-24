@@ -4,64 +4,46 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class ExtratorRegex {
-    static ArrayList<String> encontrarPalavrasComLetrasBr(String input) {
-        Pattern pattern = Pattern.compile("[a-zÀ-ü]*[çãõ][a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
-        Matcher matcher = pattern.matcher(input)
-        ArrayList<String> palavras = []
+    private static Set<String> patternMatcher(String regex, String input, Set<String> exclusions = []) {
+        Set<String> result = []
+        Matcher matcher = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(input)
         while (matcher.find()) {
-            palavras.add(matcher.group())
+            String match = matcher.group()
+            if (match && !exclusions.contains(match)) {
+                result.add(match)
+            }
         }
-        return palavras
+        return result
+    }
+
+    static Set<String> encontrarPalavrasComLetrasBr(String input) {
+        return patternMatcher("[a-zÀ-ü]*[çãõ][a-zÀ-ü]*", input)
     }
 
     static Map<String, Set> encontrarEncontrosSilabicos(String input) {
-        Set<String> tritongos = []
-        Set<String> ditongos = []
-        Set<String> hiatos = []
-
-        Pattern patternTritongos = Pattern.compile("([a-zÀ-ü]*u[aeoáàãâéêóõôíú][aeiou][a-zÀ-ü]*)|([a-zÀ-ü]*u[aeoiáàãâéêóõôíú][ua][a-zÀ-ü]*)", Pattern.CASE_INSENSITIVE)
-        Matcher matcherTritongos = patternTritongos.matcher(input)
-        while (matcherTritongos.find()) {
-            String match = matcherTritongos.group()
-            if (match) tritongos.add(match)
-        }
-
-        Pattern patternDitongos = Pattern.compile("[a-zÀ-ü]*([aeoáéó]u|iu|ã[eo]|õe|ai(?![nr])|ei(?!r)|oi(?![nm])|ui(?![mr])|áu|éi|ói|ua|ue)[a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
-        Matcher matcherDitongos = patternDitongos.matcher(input)
-        while (matcherDitongos.find()) {
-            String match = matcherDitongos.group()
-            if (match && !tritongos.contains(match)) {
-                ditongos.add(match)
-            }
-        }
-
-        Pattern patternHiatos = Pattern.compile("[a-zÀ-ü]*[aeiouáàãâéêíóõôú][aeiouáàãâéêíóõôú][a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
-        Matcher matcherHiatos = patternHiatos.matcher(input)
-        while (matcherHiatos.find()) {
-            String match = matcherHiatos.group()
-            if (match && !tritongos.contains(match) && !ditongos.contains(match)) {
-                hiatos.add(match)
-            }
-        }
+        Set<String> tritongos = patternMatcher("[a-zÀ-ü]*(u[aeoiáàãâéêóõôíú][ua]|u[aeoáàãâéêóõôíú][aeiou])[a-zÀ-ü]*", input)
+        Set<String> ditongos = patternMatcher("[a-zÀ-ü]*([aeoáéó]u|iu|ã[eo]|õe|ai(?![nr])|ei(?!r)|oi(?![nm])|ui(?![mr])|áu|éi|ói|ua|ue)[a-zÀ-ü]*", input, tritongos)
+        Set<String> hiatos = patternMatcher("[a-zÀ-ü]*[aeiouáàãâéêíóõôú][aeiouáàãâéêíóõôú][a-zÀ-ü]*", input, tritongos + ditongos)
 
         Map<String, Set> encontros = [
-            "Tritongos": tritongos,
-            "Ditongos": ditongos,
-            "Hiatos": hiatos
+                "Tritongos": tritongos,
+                "Ditongos" : ditongos,
+                "Hiatos"   : hiatos
         ]
         return encontros
     }
 
     static String limparPlurais(String input) {
-        Set<String> nomesProprios = ["Carlos", "Thomas", "Matheus", "Mateus", "Nicholas", "Nicolas", "Luis","Vinicius", "Elias", "Jonas",
-                                     "Nícolas", "Tomás", "Anís", "Dionís", "Elias", "Hercules", "Jeremias","Jesús", "Jonas", "Josias",
+        Set<String> nomesProprios = ["Carlos", "Thomas", "Matheus", "Mateus", "Nicholas", "Nicolas", "Luis", "Vinicius", "Elias", "Jonas",
+                                     "Nícolas", "Tomás", "Anís", "Dionís", "Elias", "Hercules", "Jeremias", "Jesús", "Jonas", "Josias",
                                      "Judas", "Lucas", "Luís", "Marcos", "Moisés", "Tales", "Thales", "Tobias", "Zacarias", "Deus"]
-        Pattern pattern = Pattern.compile("((?<= )[a-zà-ü]+(es|s)(?= |\$|\\n|,))|((?<=^|\\n)[a-zA-ZÀ-ü]+(es|s)(?= |\$|\\n))")
+
+        Pattern pattern = Pattern.compile("((?<= )[a-zà-ü]+(es|s)(?=\$|[\n,. ]))|((?<=^|\n)[a-zA-ZÀ-ü]+(es|s)(?=[ \$\n]))")
         Matcher matcher = pattern.matcher(input)
 
         StringBuffer sb = new StringBuffer()
-        while(matcher.find()){
-            if(nomesProprios.contains(matcher.group())) {
+        while (matcher.find()) {
+            if (nomesProprios.contains(matcher.group())) {
                 continue
             }
             matcher.appendReplacement(sb, "")
@@ -71,40 +53,25 @@ class ExtratorRegex {
         return sb.toString()
     }
 
-    static ArrayList<String> encontrarProparoxitonas(String input){
-        Set<String> resultados = []
-        Pattern pattern = Pattern.compile("[a-zA-zÀ-ü]*[bcdfghjklmnpqrstvwxyzç]?[áàâéèêíìúùóòô][bcdfghjklmnpqrstvwxyzç]?[bcdfghjklmnpqrstvwxyzç][aeiou][bcdfghjklmnpqrstvwxyzç][aeiou][bcdfghjklmnpqrstvwxyzç]?(?= |\$|\\n)", Pattern.CASE_INSENSITIVE)
-        Matcher matcher = pattern.matcher(input)
-
-        while (matcher.find()) {
-            String match = matcher.group()
-            if(match) resultados.add(match)
-        }
-        return resultados
+    static Set<String> encontrarProparoxitonas(String input) {
+        return patternMatcher("[a-zÀ-ü]*[bcdfghjklmnpqrstvwxyzç]?[áàâéèêíìúùóòô][bcdfghjklmnpqrstvwxyzç]?[bcdfghjklmnpqrstvwxyzç][aeiou][bcdfghjklmnpqrstvwxyzç][aeiou][lmnrsz]?(?=[ \$\n])", input)
     }
 
-    static ArrayList<String> encontrarFrasesComQuatroPalavras(String input){
-        ArrayList<String> frases = []
-        Pattern pattern = Pattern.compile("(?<=\\n)([a-zÀ-ü]+\\s){3}[a-zÀ-ü]+(?=\\n|\$)", Pattern.CASE_INSENSITIVE)
-        Matcher matcher = pattern.matcher(input)
-        while (matcher.find()) {
-            String match = matcher.group()
-            if(match) frases.add(match)
-        }
-        return frases
+    static Set<String> encontrarFrasesComQuatroPalavras(String input) {
+        return patternMatcher("(?<=\n)([a-zÀ-ü]+\\s){3}[a-zÀ-ü]+(?=\n|\$)", input)
     }
 
-    static Map<String, Integer> encontrarFrasesRepetidas(String input){
+    static Map<String, Integer> encontrarFrasesRepetidas(String input) {
         ArrayList<String> frases = []
         Map<String, Integer> frasesRepetidas = [:]
 
-        Pattern pattern = Pattern.compile("[a-zA-ZÀ-ü, ]+")
+        Pattern pattern = Pattern.compile("[a-zÀ-ü, ]+", Pattern.CASE_INSENSITIVE)
         Matcher matcher = pattern.matcher(input)
 
-        while(matcher.find()){
+        while (matcher.find()) {
             String match = matcher.group()
-            if(frases.contains(match)){
-                if(frasesRepetidas.get(match) != null) {
+            if (frases.contains(match)) {
+                if (frasesRepetidas.get(match) != null) {
                     frasesRepetidas.put(match, frasesRepetidas.get(match) + 1)
                 } else {
                     frasesRepetidas.put(match, 2)

@@ -68,14 +68,13 @@ static void main(String[] args) {
 
 //    println 'Palavras com çãõ: ' + ExtratorRegex.encontrarPalavrasComLetrasBr(input)
 
-    Map<String, Set<String>> encontrosSilabicos = ExtratorRegex.encontrarEncontrosSilabicos(input)
-    println 'Tritongos': encontrosSilabicos.get('Tritongos')
-    println 'Ditongos': encontrosSilabicos.get('Ditongos')
-    println 'Hiatos': encontrosSilabicos.get('Hiatos')
+//    Map<String, Set<String>> encontrosSilabicos = ExtratorRegex.encontrarEncontrosSilabicos(input)
+//    println 'Tritongos': encontrosSilabicos.get('Tritongos')
+//    println 'Ditongos': encontrosSilabicos.get('Ditongos')
+//    println 'Hiatos': encontrosSilabicos.get('Hiatos')
 
-//    println 'Texto sem plurais: ' + ExtratorRegex.limparPlurais(input)
+    println 'Texto sem plurais: ' + ExtratorRegex.limparPlurais(input)
 //    println 'Proparoxítonas: ' + ExtratorRegex.encontrarProparoxitonas(input)
 //    println 'Frases com quatro palavras: ' + ExtratorRegex.encontrarFrasesComQuatroPalavras(input)
 //    println 'Frases repetidas: ' + ExtratorRegex.encontrarFrasesRepetidas(input)
-
 }
