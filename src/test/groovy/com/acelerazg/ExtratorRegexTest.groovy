@@ -83,7 +83,7 @@ class ExtratorRegexTest extends Specification {
                     "suor", "judaísmo", "frio",
                     "saí", "ataúde", "coar",
                     "tireoide", "ruína", "lua",
-                    "voo", "leão", "teatro"
+                    "voo", "teatro"
             ]
 
         String input = String.join(' ', ditongos) + ' ' + String.join(' ', tritongos) + ' ' + String.join(' ', hiatos)

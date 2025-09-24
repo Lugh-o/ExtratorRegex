@@ -26,21 +26,21 @@ class ExtratorRegex {
             if (match) tritongos.add(match)
         }
 
-        Pattern patternHiatos = Pattern.compile("[a-zÀ-ü]+([eou][aeãíú]|([aeiou])\\2|úo|[ai][íuiú]|i[aeo]|oi)[a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
-        Matcher matcherHiatos = patternHiatos.matcher(input)
-
-        while (matcherHiatos.find()) {
-            String match = matcherHiatos.group()
-            if(match && !tritongos.contains(match)) {
-                hiatos.add(match)
-            }
-        }
-        Pattern patternDitongos = Pattern.compile("[a-zÀ-ü]*([aeoáéó][iu]|u[ae]|ui|iu|ã[eo]|[õ]e|eo)[a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
+        Pattern patternDitongos = Pattern.compile("[a-zÀ-ü]*([aeoáéó]u|iu|ã[eo]|õe|ai(?![nr])|ei(?!r)|oi(?![nm])|ui(?![mr])|áu|éi|ói|ua|ue)[a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
         Matcher matcherDitongos = patternDitongos.matcher(input)
         while (matcherDitongos.find()) {
             String match = matcherDitongos.group()
-            if(match && !ditongos.contains(match) && !tritongos.contains(match)) {
+            if (match && !tritongos.contains(match)) {
                 ditongos.add(match)
+            }
+        }
+
+        Pattern patternHiatos = Pattern.compile("[a-zÀ-ü]*[aeiouáàãâéêíóõôú][aeiouáàãâéêíóõôú][a-zÀ-ü]*", Pattern.CASE_INSENSITIVE)
+        Matcher matcherHiatos = patternHiatos.matcher(input)
+        while (matcherHiatos.find()) {
+            String match = matcherHiatos.group()
+            if (match && !tritongos.contains(match) && !ditongos.contains(match)) {
+                hiatos.add(match)
             }
         }
 
@@ -52,7 +52,7 @@ class ExtratorRegex {
         return encontros
     }
 
-    static String limparPlurais(String input){
+    static String limparPlurais(String input) {
         Set<String> nomesProprios = ["Carlos", "Thomas", "Matheus", "Mateus", "Nicholas", "Nicolas", "Luis","Vinicius", "Elias", "Jonas",
                                      "Nícolas", "Tomás", "Anís", "Dionís", "Elias", "Hercules", "Jeremias","Jesús", "Jonas", "Josias",
                                      "Judas", "Lucas", "Luís", "Marcos", "Moisés", "Tales", "Thales", "Tobias", "Zacarias", "Deus"]
