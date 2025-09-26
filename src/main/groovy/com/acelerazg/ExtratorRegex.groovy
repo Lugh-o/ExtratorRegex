@@ -38,7 +38,7 @@ class ExtratorRegex {
                                      "Nícolas", "Tomás", "Anís", "Dionís", "Elias", "Hercules", "Jeremias", "Jesús", "Jonas", "Josias",
                                      "Judas", "Lucas", "Luís", "Marcos", "Moisés", "Tales", "Thales", "Tobias", "Zacarias", "Deus"]
 
-        Pattern pattern = Pattern.compile("((?<= )[a-zà-ü]+(es|s)(?=\$|[\n,. ]))|((?<=^|\n)[a-zA-ZÀ-ü]+(es|s)(?=[ \$\n]))")
+        Pattern pattern = Pattern.compile("((?<= )[a-zà-ü]+(es|s)(?=\\n|\$|[,. ]))|((?<=^|\\n|\\. )[a-zA-ZÀ-ü]+(es|s)(?=\$| |\\n))")
         Matcher matcher = pattern.matcher(input)
 
         StringBuffer sb = new StringBuffer()
@@ -54,7 +54,7 @@ class ExtratorRegex {
     }
 
     static Set<String> encontrarProparoxitonas(String input) {
-        return patternMatcher("[a-zÀ-ü]*[bcdfghjklmnpqrstvwxyzç]?[áàâéèêíìúùóòô][bcdfghjklmnpqrstvwxyzç]?[bcdfghjklmnpqrstvwxyzç][aeiou][bcdfghjklmnpqrstvwxyzç][aeiou][lmnrsz]?(?=[ \$\n])", input)
+        return patternMatcher("[a-zÀ-ü]*[áàâéèêíìúùóòô][bcdfghjklmnpqrstvwxyzç]?[bcdfghjklmnpqrstvwxyzç][aeiou][bcdfghjklmnpqrstvwxyzç][aeiou][lmnrsz]?(?=[ \$\n])", input)
     }
 
     static Set<String> encontrarFrasesComQuatroPalavras(String input) {
