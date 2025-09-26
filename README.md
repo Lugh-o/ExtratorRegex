@@ -2,6 +2,8 @@
 
 Programa feito com o intuito de aprimorar meus estudos com RegEx, realizando diversas operações complexas utilizando essa ferramenta.
 
+[Video explicando o projeto](https://www.youtube.com/watch?v=v2CqigVxQ6k)
+
 ## Funcionalidades
 
 - Lista palavras que contenham ç, ã ou õ
