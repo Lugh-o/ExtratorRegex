@@ -58,7 +58,7 @@ class ExtratorRegex {
     }
 
     static Set<String> encontrarFrasesComQuatroPalavras(String input) {
-        return patternMatcher("(?<=\n)([a-zÀ-ü]+\\s){3}[a-zÀ-ü]+(?=\n|\$)", input)
+        return patternMatcher("(?<=^|\n)([a-zÀ-ü]+\\s){3}[a-zÀ-ü]+(?=\n|\$)", input)
     }
 
     static Map<String, Integer> encontrarFrasesRepetidas(String input) {
