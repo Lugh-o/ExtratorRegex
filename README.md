@@ -11,6 +11,8 @@ Programa feito com o intuito de aprimorar meus estudos com RegEx, realizando div
     - Todas as palavras que contem Tritongos
     - Todas as palavras que contem Hiatos
 - Identifica frases de exatamente 4 palavras
+- Identifica palavras proparoxítonas
+- Limpa o texto removendo todas as palavras no plural
 
 Obs: A identificação de encontros silábicos é realizada de maneira aproximada (assumi precisão satisfatória de 90%), devido à impossibilidade de ter certeza disso apenas com grafia (as vezes até com fonética é ambíguo).
 
